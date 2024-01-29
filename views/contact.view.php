@@ -1,7 +1,9 @@
 <?php 
 
 include "../partials/header.php";
-include "../partials/footer.php";
+
+require_once '../config/php_mailer_config.php';
+require_once '../vendor/autoload.php';
 
 ?>
 
@@ -22,4 +24,10 @@ include "../partials/footer.php";
     <p><input type="submit" value="Send" name="submit" /></p>
 </form>
 
+<?php 
 
+include "../partials/footer.php";
+
+require_once '../controllers/contact.php';
+
+?>

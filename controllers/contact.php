@@ -57,6 +57,3 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST')) {
     $error = "Veuillez remplir tous les champs";
 }
 
-
-
-include "../partials/footer.php"; ?>
