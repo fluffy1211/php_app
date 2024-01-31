@@ -84,3 +84,25 @@ li {
 .error {
     color: red;
 }
+
+/* PAGE DE CONTACT  */
+
+.contact-form .signup-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+input, textarea {
+    width: 20rem;
+    margin-bottom: 1rem;
+} 
+
+.contact-form label {
+    text-align: left;
+}
+
+.error {
+    color: red;
+}

@@ -1,3 +1,4 @@
 php_mailer_config.php
 
 /vendor
+/config
