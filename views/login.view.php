@@ -1,5 +1,7 @@
 <?php
 
+ob_start();
+
 include "../partials/header.php";
 include "../config/dbconfig.php";
 
@@ -30,13 +32,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         // Comparer les mots de passe
         if (password_verify($password, $user['password'])) {
             session_start(); 
-            $_SESSION['name'] = $user['name'];
-            $_SESSION['email'] = $email['email'];
-            header("Location: index.view.php");
+            $_SESSION['user'] = $user;
+            $_SESSION['user']['logged'] = true;
+            header("Location: profile.view.php");
+            ob_end_flush();
         } else {
             // Mot de passe incorrect
             echo "Mot de passe incorrect";
-            exit;
         }
     }
 }
