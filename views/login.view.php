@@ -12,7 +12,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $email = $_POST["email"];
     $password = $_POST["password"];
 
-    if (!empty($_POST['email']) && !empty($_POST['password'])) {
 
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             echo "Invalid email format.";
@@ -28,13 +27,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         if (!$user) {
             echo "L'email n'existe pas";
         } else {
+        
+        $hashed_password = $user['password'];
 
         // Comparer les mots de passe
-        if (password_verify($password, $user['password'])) {
-            session_start(); 
+        if (password_verify($password, $hashed_password)) {
+            // On peut démarrer une session
+            session_start();
             $_SESSION['user'] = $user;
             $_SESSION['user']['logged'] = true;
-            header("Location: profile.view.php");
+            
+            // On redirige vers une page home ou profile
+            header('Location: profile.view.php');
             ob_end_flush();
         } else {
             // Mot de passe incorrect
@@ -42,15 +46,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
     }
 }
-}
-
-
-
-
-
-
-
-
 
 
 ?>

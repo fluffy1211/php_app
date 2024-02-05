@@ -3,14 +3,14 @@
 ob_start();
 
 include "../partials/header.php";
-session_start();
+// session_start();
 
 ob_end_flush();
 
 ?>
 
 
-<h1>Bienvenue <?= $_SESSION['users']['name'] ?></h1>
+<h1>Bienvenue <?= $_SESSION['user']['name'] ?></h1>
 
 
 <?php
