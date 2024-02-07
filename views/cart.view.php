@@ -1,6 +1,5 @@
 <?php 
 
-session_start();
 
 // J'inclus la page sur laquelle je fais l'appel API pour récupérer les produits
 include "../config/curl_products.php";
