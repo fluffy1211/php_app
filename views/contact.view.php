@@ -2,7 +2,7 @@
 
 include "../partials/header.php";
 
-require_once '../config/php_mailer_config.php';
+// require_once '../config/php_mailer_config.php';
 require_once '../vendor/autoload.php';
 
 ?>

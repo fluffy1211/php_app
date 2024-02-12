@@ -1,4 +1,4 @@
 php_mailer_config.php
-
+.env
 /vendor
 /config
