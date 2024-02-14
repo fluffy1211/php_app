@@ -2,7 +2,7 @@
 
 ob_start();
 
-include "../partials/header.php";
+include "partials/header.php";
 // session_start();
 
 ob_end_flush();
@@ -27,6 +27,6 @@ ob_end_flush();
 
 <?php
 
-include "../partials/footer.php";
+include "partials/footer.php";
 
 ?>

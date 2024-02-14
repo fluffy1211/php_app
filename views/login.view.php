@@ -2,8 +2,8 @@
 
 ob_start();
 
-include "../partials/header.php";
-include "../config/dbconfig.php";
+include "partials/header.php";
+include "config/dbconfig.php";
 
 // Coder la logique pour le login
 
@@ -38,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $_SESSION['user']['logged'] = true;
             
             // On redirige vers une page home ou profile
-            header('Location: profile.view.php');
+            header('Location: profile');
             ob_end_flush();
         } else {
             // Mot de passe incorrect
@@ -65,6 +65,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 <?php
 
-include "../partials/footer.php";
+include "partials/footer.php";
 
 ?>

@@ -2,18 +2,18 @@
 <?php
 
 // On requiert notre vue pour la page de contact
-require_once '../views/contact.view.php';
+require_once 'views/contact.view.php';
 
 // On requiert notre fichier de configuration pour PHPMailer
 // require_once '../config/php_mailer_config.php';
-require_once '../vendor/autoload.php';
+require_once 'vendor/autoload.php';
 
 // On utilise la classe PHPMailer
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\SMTP;
 
-include '../dotenv.php';
+include 'dotenv.php';
 
 
 // Récupération des données rentrées par l'utilisateur du formulaire de contact 

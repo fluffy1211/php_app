@@ -13,7 +13,7 @@
     <?php endif; ?>
 
 
-    <script src="<?= $path ?>/views/scripts/app.js" defer></script>
+    <script src="/views/scripts/app.js" defer></script>
 </head>
 <body>
     

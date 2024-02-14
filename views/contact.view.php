@@ -1,9 +1,8 @@
 <?php 
 
-include "../partials/header.php";
+include "partials/header.php";
 
-// require_once '../config/php_mailer_config.php';
-require_once '../vendor/autoload.php';
+require_once 'vendor/autoload.php';
 
 ?>
 
@@ -26,8 +25,8 @@ require_once '../vendor/autoload.php';
 
 <?php 
 
-include "../partials/footer.php";
+include "partials/footer.php";
 
-require_once '../controllers/contact.php';
+require_once 'controllers/contact.php';
 
 ?>

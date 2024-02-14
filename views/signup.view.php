@@ -1,98 +1,98 @@
-<?php
+<?php 
 
+// Comme on envoit/modifie des en-tetes successivement (avec les include et le header(location) plus bas)
+// On crée à partir de cette ligne une zone tampon qui se termine après notre redirection 
+// Cela permet d'envoyer en une seule pièce le code ci-dessous
 ob_start();
 
-include "../partials/header.php";
-include "../config/dbconfig.php";
-include "../utils/functions.php";
+include "partials/header.php";
+include "config/dbconfig.php";
+include "utils/functions.php";
 
+// On vérifie que le form ait été soumis
+if ($_SERVER['REQUEST_METHOD'] === "POST") {
+    // On vérifie que TOUS les champs soient bien remplis
+    if (!empty($_POST['name']) && !empty($_POST['email']) && !empty($_POST['password']) && !empty($_POST['confirm'])) {
 
+        // Pour name on échappe les carcatères spéciaux
+        $name = htmlspecialchars($_POST['name']);
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+        $confirm = $_POST['confirm'];
 
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $username = $_POST["username"];
-    $email = $_POST["email"];
-    $password = $_POST["password"];
-    $confirm_password = $_POST["confirm_password"];
-
-    if (!empty($_POST['username']) && !empty($_POST['email']) && !empty($_POST['password']) && !empty($_POST['confirm_password'])) {
-
-        // Validate username
-        // if (htmlspecialchars($username)) {
-        //     echo "No special characters.";
-        //     exit;
-        // }
-
-        // Validate email
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            echo "Invalid email format.";
-            exit;
-        }
-
-        // Validate password
-        if ($password != $confirm_password) {
-// Passwords match
-            echo "Passwords do not match.";
-            exit;
-        }
-
-        // On vérifie que le mdp corresponde aux critères de la CNIL (12 caractères, au moins 1 chiffre, 1 lettre majuscule, 1 lettre minuscule, 1 caractère spécial)
-        if(!preg_match('/^(?=.*\d)(?=.*[A-Za-z])[0-9A-Za-z!@#$%]{12,}$/', $password)) {
-            echo "Le format du mdp n'est pas le bon";
-            exit;
-        }
-
-        // Hash the password
-        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-
-        // On vérifie si le mail ou email n'existe pas déjà en bdd
-        if (checkExists('name', $username, $pdo)) { 
-            echo "Le nom est déjà pris";
-        } else if (checkExists('email', $email, $pdo)) {
-            echo "L'email est déjà pris";
-        } else {
-    
-        // Write request with PDO
-           $sql = "INSERT INTO users (name, email, password) VALUES (?, ?, ?)";
-            $stmt = $pdo->prepare($sql);
-            $result = $stmt->execute([$username, $email, $hashed_password]);
-
-            if ($result) {
-                // header pour redirect
-                header("Location: signup-success.view.php");
-                ob_end_flush();
- 
-            } else {
- 
-                $error = "Une erreur est survenue" . $stmt->errorInfo();
- 
+        // Si les mdp sont les memes
+        if ($password === $confirm) {
+            // On vérifie le format de l'email 
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $error = "Le format de l'email n'est pas bon";
+                die();
             }
- 
+
+            // Expression régulières pour vérifier le format du mdp 
+            $regex = "/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{12,}$/";
+            // Fonction pour vérifier une regex sur une string preg_match()
+            $passValid = preg_match($regex, $password);
+
+            if ($passValid) {
+
+                // Avant d'envoyer le mdp en bdd il faut le hasher !
+                $hash = password_hash($password, PASSWORD_DEFAULT);
+
+                // Avec checkExists (importée depuis functions.php) on vérifie si le name ou email 
+                // n'existe pas déjà en BDD
+                if (checkExists('name', $name, $pdo)) {    
+                    $error = "Le nom est déjà pris";
+                } else if (checkExists('email', $email, $pdo)) {
+                    $error = "L'email est déjà pris";
+                } else {
+                    // Écrire une requete préparée avec pdo
+                    $sql = "INSERT INTO users(name, email, password) VALUES(?, ?, ?)";
+                    $stmt = $pdo->prepare($sql);
+                    $result = $stmt->execute([$name, $email, $hash]);
+
+                    // Afficher les erreurs si il y en a, sinon un message de succès 
+                    if ($result) {
+                        // On redirige vers une page de succès 
+                        header('Location: signup-sucess');
+                        // On termine notre zone tampon
+                        ob_end_flush();
+                    } else {
+                        $error = "Erreur pendant l'ajout : " . $stmt->errorInfo();
+                    } 
+                }
+            } else {
+                $error = "Le format du mot de passe n'est pas le bon. Il doit faire 12 caractères au minimum et inclure une minuscule, une majuscule, un chiffre et un des caractères spéciaux suivants : #?!@$ %^&*-";
+            }
+        } else {
+            $error = "Les mots de passe doivent etre identiques";
         }
-
+    } else {
+        $error = "Veuillez remplir tous les champs";
     }
-}
-
+} 
 ?>
 
 
-<body>
-    <h1>Signup</h1>
-    <form class="signup-form" method="POST">
-        <input type="text" placeholder="Votre nom ici ..." name="username" required><br><br>
+<h1>SIGNUP</h1>
 
-        <input type="email" placeholder="Votre email ici ..." name="email" required><br><br>
+<form class="signup-form" method="POST">
+    <input type="text" name="name" placeholder="Votre pseudo ici ...">
+    <br>
+    <input type="email" name="email" placeholder="Votre email ici ...">
+    <br>
+    <input type="password" name="password" placeholder="Votre mot de passe ici ...">
+    <br>
+    <input type="password" name="confirm" placeholder="Votre confirmation du mot de passe...">
+    <br>
+    <input type="submit" name="submit" value="Signup">
+</form>
 
-        <input type="password" placeholder="Votre mdp ici ..." name="password" required><br><br>
+<?php if (isset($error)) : ?> 
+    <p class="error"><?= $error ?></p>
+<?php endif ?>
 
-        <input type="password" placeholder="Confirmer votre mdp ..." name="confirm_password" required><br><br>
+<?php 
 
-        <input type="submit" name="submit" value="Signup">
-    </form>
-</body>
-</html>
-
-<?php
-
-include "../partials/footer.php";
+include "partials/footer.php";
 
 ?>
