@@ -2,16 +2,18 @@
 <?php
 
 // On requiert notre vue pour la page de contact
-require_once '../views/contact.view.php';
+require_once 'views/contact.view.php';
 
 // On requiert notre fichier de configuration pour PHPMailer
-require_once '../config/php_mailer_config.php';
-require_once '../vendor/autoload.php';
+// require_once '../config/php_mailer_config.php';
+require_once 'vendor/autoload.php';
 
 // On utilise la classe PHPMailer
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\SMTP;
+
+include 'dotenv.php';
 
 
 // Récupération des données rentrées par l'utilisateur du formulaire de contact 
@@ -29,12 +31,12 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST')) {
         try {
             //Server settings / On configure le serveur SMTP
             $mail->isSMTP();                                            
-            $mail->Host       = SMTP_HOST;                     
+            $mail->Host       = $mailhost;                     
             $mail->SMTPAuth   = true;                                   
-            $mail->Username   = SMTP_USERNAME;                     
-            $mail->Password   = SMTP_PASSWORD;                               
-            $mail->SMTPSecure = SMTP_ENCRYPTION;            
-            $mail->Port       = SMTP_PORT;                              
+            $mail->Username   = $mailusername;                     
+            $mail->Password   = $mailpassword;                               
+            $mail->SMTPSecure = $mailencrypt;            
+            $mail->Port       = $mailport;                              
 
             //Recipients / On précise les récipients pour le mail 
             $mail->setFrom($email);

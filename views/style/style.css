@@ -84,3 +84,49 @@ li {
 .error {
     color: red;
 }
+
+/* PAGE DE CONTACT  */
+
+.contact-form .signup-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+input, textarea {
+    width: 20rem;
+    margin-bottom: 1rem;
+} 
+
+.contact-form label {
+    text-align: left;
+}
+
+.error {
+    color: red;
+}
+
+
+/* PAGE DE PROFIL */
+
+.grid-container img  {
+    width: 135px;
+    height: 135px;
+    border-radius: 50%;
+    margin-bottom: 2rem;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    row-gap: 0.2rem;
+    column-gap: 0.2rem;
+    justify-content: center;
+    align-items: center;
+    margin-top: 3rem;
+}
+
+.grid-container p {
+    font-weight: bold;
+}
